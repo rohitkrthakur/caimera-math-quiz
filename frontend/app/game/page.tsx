@@ -13,9 +13,9 @@ export default function GamePage() {
   const [winner, setWinner] = useState("");
   const [scores, setScores] = useState<Record<string, number>>({});
 
-  // ----------------------
-  // 🔌 Connect socket
-  // ----------------------
+
+  // Connect socket
+  
   useEffect(() => {
     const savedUsername = localStorage.getItem("username");
 
@@ -60,9 +60,8 @@ export default function GamePage() {
     };
   }, [router]);
 
-  // ----------------------
-  // 📩 Submit answer
-  // ----------------------
+  //  Submit answer
+
   const handleSubmit = () => {
     if (!answer.trim()) return;
 
@@ -76,7 +75,7 @@ export default function GamePage() {
         {/* Main Game */}
         <div className="md:col-span-2 bg-zinc-900 p-8 rounded-2xl shadow-xl">
           <h1 className="text-3xl font-bold mb-4">
-            Welcome, {username} 👋
+            Welcome, {username} 👋☕
           </h1>
 
           <div className="bg-zinc-800 p-6 rounded-xl text-center mb-6">
@@ -89,22 +88,29 @@ export default function GamePage() {
             </p>
           </div>
 
-          {/* Winner */}
+          {/* Wi🏆nner */}
           {winner && (
             <div className="bg-green-600 p-3 rounded-lg mb-4 text-center font-semibold">
-              🏆 {winner} solved it first!
+               {winner} 🍕🍟 solved it first!
             </div>
           )}
 
           {/* Answer Input */}
           <div className="flex gap-3">
             <input
-              type="text"
-              placeholder="Enter answer"
-              value={answer}
-              onChange={(e) => setAnswer(e.target.value)}
-              className="flex-1 p-3 rounded-lg bg-zinc-800 border border-zinc-700 outline-none"
-            />
+  type="text"
+  placeholder="Enter answer"
+  value={answer}
+  onChange={(e) => {
+    const value = e.target.value;
+
+    // allow numbers and negative sign
+    if (/^-?\d*$/.test(value)) {
+      setAnswer(value);
+    }
+  }}
+  className="flex-1 p-3 rounded-lg bg-zinc-800 border border-zinc-700 outline-none"
+/>
 
             <button
               onClick={handleSubmit}
