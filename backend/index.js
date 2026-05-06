@@ -64,25 +64,29 @@ io.on("connection", (socket) => {
 
     const result = submitAnswer(username, answer);
 
-    // if someone solved first
-    if (result) {
-      console.log(`Winner: ${result.winner}`);
-
-      io.emit("winner", result.winner);
-
-      io.emit("leaderboard-update", result.scores);
-
-      // next question after small delay
-      setTimeout(() => {
-        const newQ = generateQuestion();
-
-        setQuestion(newQ.question, newQ.answer);
-
-        console.log("New question generated");
-
-        io.emit("new-question", newQ.question);
-      }, 3000);
+    // wrong answer
+    if (!result) {
+      socket.emit("wrong-answer", "❌ Wrong answer, try again!");
+      return;
     }
+
+    // correct answer
+    console.log(`Winner: ${result.winner}`);
+
+    io.emit("winner", result.winner);
+
+    io.emit("leaderboard-update", result.scores);
+
+    // next question after small delay
+    setTimeout(() => {
+      const newQ = generateQuestion();
+
+      setQuestion(newQ.question, newQ.answer);
+
+      console.log("New question generated");
+
+      io.emit("new-question", newQ.question);
+    }, 3000);
   });
 
   socket.on("disconnect", () => {
